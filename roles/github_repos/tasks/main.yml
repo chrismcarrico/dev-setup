@@ -1,0 +1,15 @@
+---
+- name: Ensure workspace directory exists
+  file:
+    path: "{{ github_workspace }}"
+    state: directory
+    mode: '0755'
+
+- name: Clone GitHub repositories
+  git:
+    repo: "{{ item.repo }}"
+    dest: "{{ github_workspace }}/{{ item.dest }}"
+    update: yes
+    accept_hostkey: yes
+  loop: "{{ github_repos }}"
+  when: github_repos | length > 0

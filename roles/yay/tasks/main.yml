@@ -1,0 +1,34 @@
+---
+- name: Ensure base-devel and git are installed
+  become: yes
+  pacman:
+    state: present
+    update_cache: yes
+    name:
+      - base-devel
+      - git
+
+- name: Check if yay is installed
+  command: yay --version
+  register: yay_check
+  ignore_errors: yes
+  changed_when: false
+
+- name: Clone yay repository
+  git:
+    repo: "https://aur.archlinux.org/yay.git"
+    dest: "/tmp/yay-install"
+    version: master
+  when: yay_check.rc != 0
+
+- name: Build and install yay
+  command: makepkg -si --noconfirm
+  args:
+    chdir: "/tmp/yay-install"
+  when: yay_check.rc != 0
+
+- name: Cleanup yay clone
+  file:
+    path: "/tmp/yay-install"
+    state: absent
+  when: yay_check.rc != 0

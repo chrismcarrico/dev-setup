@@ -1,0 +1,10 @@
+---
+- name: Check if rustc is installed and accessible
+  command: rustc --version
+  register: rustc_check
+  ignore_errors: yes
+  changed_when: false
+
+- name: Initialize rustup with stable toolchain
+  command: rustup default stable
+  when: rustc_check.rc != 0

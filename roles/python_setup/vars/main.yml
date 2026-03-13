@@ -1,0 +1,6 @@
+---
+default_venv_path: "{{ lookup('env', 'HOME') }}/.venv"
+python_packages:
+  - uv
+  - ruff
+  - ipython

@@ -1,0 +1,26 @@
+---
+core_packages:
+  - vim
+  - neovim
+  - curl
+  - wget
+  - htop
+  - zsh
+  - tmux
+  - fzf
+  - ripgrep
+  - jq
+  - docker
+  - docker-compose
+  - nodejs
+  - npm
+  - python
+  - python-pip
+  - base-devel
+  - git
+  - go
+  - clang
+  - cmake
+  - gdb
+  - rustup
+  - btop

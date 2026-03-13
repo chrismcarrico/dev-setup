@@ -1,0 +1,20 @@
+---
+# Default workspace directory where repos will be cloned
+github_workspace: "{{ lookup('env', 'HOME') }}/Source"
+
+github_repos:
+  # Example public repo:
+  # - repo: "https://github.com/torvalds/linux.git"
+  #   dest: "linux"
+  
+  # Example personal repo (requires SSH keys to be set up on the machine):
+  # - repo: "git@github.com:username/private-repo.git"
+  #   dest: "private-repo"
+  - repo: "https://github.com/LeelaChessZero/lc0.git"
+    dest: "lc0"
+  - repo: "https://github.com/google-deepmind/alphastar.git"
+    dest: "alphastar"
+  - repo: "https://github.com/google-deepmind/graphcast.git"
+    dest: "graphcast"
+  - repo: "https://github.com/google-deepmind/pysc2.git"
+    dest: "pysc2"

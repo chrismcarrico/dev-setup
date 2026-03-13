@@ -1,0 +1,13 @@
+---
+- name: Ensure Code command is available
+  command: code --version
+  register: code_check
+  ignore_errors: yes
+  changed_when: false
+
+- name: Install VS Code extensions
+  command: code --install-extension {{ item }} --force
+  loop: "{{ vscode_extensions }}"
+  when: code_check.rc == 0
+  # Some extensions might already be installed, so we don't treat non-zero return code as fatal
+  ignore_errors: yes

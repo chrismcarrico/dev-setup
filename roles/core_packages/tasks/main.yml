@@ -1,0 +1,6 @@
+---
+- name: Install core system packages
+  pacman:
+    name: "{{ core_packages }}"
+    state: present
+    update_cache: yes

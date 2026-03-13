@@ -1,0 +1,23 @@
+---
+- name: Ensure python3-virtualenv is installed
+  pacman:
+    name: python-virtualenv
+    state: present
+  become: yes
+
+- name: Create default Python virtual environment
+  command: python3 -m venv "{{ default_venv_path }}"
+  args:
+    creates: "{{ default_venv_path }}/bin/python"
+
+- name: Upgrade pip in virtual environment
+  pip:
+    name: pip
+    state: latest
+    virtualenv: "{{ default_venv_path }}"
+
+- name: Install Python packages into default virtual environment
+  pip:
+    name: "{{ python_packages }}"
+    state: present
+    virtualenv: "{{ default_venv_path }}"
