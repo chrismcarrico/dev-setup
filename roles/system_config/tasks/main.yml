@@ -6,9 +6,10 @@
     enabled: yes
   become: yes
 
+# ansible_user_id is root here because the play gathers facts with become
 - name: Add user to docker group
   user:
-    name: "{{ ansible_user_id }}"
+    name: "{{ lookup('env', 'USER') }}"
     groups: docker
     append: yes
   become: yes

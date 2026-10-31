@@ -4,10 +4,11 @@
   register: code_check
   ignore_errors: yes
   changed_when: false
+  check_mode: no
 
 - name: Install VS Code extensions
-  command: code --install-extension {{ item }} --force
+  command: code --install-extension {{ item }}
   loop: "{{ vscode_extensions }}"
+  register: vscode_install
+  changed_when: "'already installed' not in (vscode_install.stdout | default(''))"
   when: code_check.rc == 0
-  # Some extensions might already be installed, so we don't treat non-zero return code as fatal
-  ignore_errors: yes

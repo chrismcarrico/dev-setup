@@ -4,3 +4,4 @@
     name: "{{ aur_packages }}"
     use: yay
     state: present
+  become_user: aur_builder

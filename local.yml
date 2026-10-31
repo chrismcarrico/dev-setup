@@ -7,13 +7,16 @@
   roles:
     - { role: core_packages, tags: core }
     # Run yay role before aur_packages since aur_packages needs an AUR helper
-    - { role: yay, tags: yay, become: no }
-    - { role: aur_packages, tags: aur, become: no }
+    - { role: yay, tags: yay }
+    - { role: aur_packages, tags: aur }
     - { role: sublime_repo, tags: sublime }
-    - { role: oh_my_zsh, tags: zsh, become: no }
+    # Needs the packages above, and owns ~/.zshrc and Oh My Zsh
+    - { role: dotfiles, tags: dotfiles, become: no }
     - { role: rust_setup, tags: rust, become: no }
     - { role: python_setup, tags: python, become: no }
     - { role: vscode_extensions, tags: vscode, become: no }
-    - { role: dotfiles, tags: dotfiles, become: no }
+    - { role: claude_code, tags: claude, become: no }
     - { role: system_config, tags: config }
     - { role: github_repos, tags: github, become: no }
+    # Needs an SSH key on GitHub, so this only runs with --tags personal-repos
+    - { role: personal_repos, tags: [personal-repos, never], become: no }

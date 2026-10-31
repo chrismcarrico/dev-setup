@@ -1,0 +1,2 @@
+---
+dotfiles_path: "{{ lookup('env', 'HOME') }}/Source/dotfiles"

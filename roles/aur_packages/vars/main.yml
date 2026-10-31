@@ -3,4 +3,4 @@ aur_packages:
   - visual-studio-code-bin
   - postman-bin
   - google-chrome
-  - obsidian
+  - claude-desktop

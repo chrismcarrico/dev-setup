@@ -1,0 +1,17 @@
+---
+personal_workspace: "{{ lookup('env', 'HOME') }}/Source"
+
+# Cloned over SSH from github.com/chrismcarrico. dotfiles and dev-setup aren't
+# listed because they're already on the machine by the time this runs.
+personal_repos:
+  - blackboard
+  - cannonball
+  - chrismcarrico
+  - cloudpost
+  - cover-letters
+  - homework
+  - resume
+  - sts2rl
+  - texbuilder
+  - trick-container
+  - uwu

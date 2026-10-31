@@ -1,0 +1,5 @@
+---
+- name: Install Claude Code CLI
+  shell: curl -fsSL https://claude.ai/install.sh | bash
+  args:
+    creates: "{{ lookup('env', 'HOME') }}/.local/bin/claude"

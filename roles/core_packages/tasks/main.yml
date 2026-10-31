@@ -1,6 +1,7 @@
 ---
+# No update_cache here: run.sh upgrades the system first, and pacman -Sy
+# without -u is a partial upgrade.
 - name: Install core system packages
   pacman:
     name: "{{ core_packages }}"
     state: present
-    update_cache: yes

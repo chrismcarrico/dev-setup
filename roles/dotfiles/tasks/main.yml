@@ -1,23 +1,20 @@
 ---
-- name: Ensure dotfiles directory exists
-  file:
-    path: "{{ lookup('env', 'HOME') }}/.dotfiles"
-    state: directory
-
 - name: Clone personal dotfiles repository
   git:
     repo: "https://github.com/chrismcarrico/dotfiles"
-    dest: "{{ lookup('env', 'HOME') }}/.dotfiles"
-    update: yes
+    dest: "{{ dotfiles_path }}"
+    update: no
 
-# Note: We don't automatically run an install script since dotfile setup
-# operations often vary. For many users, GNU stow is used here. 
-# We'll try to find a setup script and execute it if it exists!
-- name: Check for a setup script in the dotfiles repo
-  stat:
-    path: "{{ lookup('env', 'HOME') }}/.dotfiles/setup.sh"
-  register: dotfiles_setup
-
+# Installs Oh My Zsh and symlinks home/ into $HOME. Anything already there is
+# moved to <file>.bak-<timestamp>.
 - name: Run dotfiles setup script
-  command: bash "{{ lookup('env', 'HOME') }}/.dotfiles/setup.sh"
-  when: dotfiles_setup.stat.exists and dotfiles_setup.stat.executable
+  command: "{{ dotfiles_path }}/setup.sh"
+  register: dotfiles_setup
+  changed_when: "' -> ' in (dotfiles_setup.stdout | default('')) or 'cloning' in (dotfiles_setup.stdout | default(''))"
+
+# setup.sh can't run chsh without a terminal
+- name: Change user default shell to zsh
+  user:
+    name: "{{ lookup('env', 'USER') }}"
+    shell: /usr/bin/zsh
+  become: yes

@@ -1,0 +1,15 @@
+---
+- name: Ensure workspace directory exists
+  file:
+    path: "{{ personal_workspace }}"
+    state: directory
+    mode: '0755'
+
+# update: no leaves existing clones alone, so re-runs can't touch work in progress
+- name: Clone personal GitHub repositories
+  git:
+    repo: "git@github.com:chrismcarrico/{{ item }}.git"
+    dest: "{{ personal_workspace }}/{{ item }}"
+    update: no
+    accept_hostkey: yes
+  loop: "{{ personal_repos }}"

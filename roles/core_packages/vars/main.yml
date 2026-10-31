@@ -12,6 +12,9 @@ core_packages:
   - jq
   - docker
   - docker-compose
+  - kubectl
+  - minikube
+  - kind
   - nodejs
   - npm
   - python
@@ -24,3 +27,16 @@ core_packages:
   - gdb
   - rustup
   - btop
+  - alacritty
+  - meld
+  - lazygit
+  - lazydocker
+  - obsidian
+  - firefox
+  - tldr
+  - duf
+  - glances
+  - openssh
+  - rsync
+  - unzip
+  - powerline-fonts

@@ -1,5 +1,5 @@
 ---
-default_venv_path: "{{ lookup('env', 'HOME') }}/.venv"
+default_venv_path: "{{ lookup('env', 'HOME') }}/.default"
 python_packages:
   - uv
   - ruff

@@ -1,34 +1,36 @@
 ---
 - name: Ensure base-devel and git are installed
-  become: yes
   pacman:
     state: present
-    update_cache: yes
     name:
       - base-devel
       - git
+
+# AUR builds can't run as root, and sudo can't prompt mid-build, so they run
+# as this user with passwordless pacman (the setup kewlfft.aur documents).
+- name: Create the AUR build user
+  user:
+    name: aur_builder
+    create_home: yes
+
+- name: Allow the AUR build user to run pacman
+  copy:
+    content: "aur_builder ALL=(ALL) NOPASSWD: /usr/bin/pacman\n"
+    dest: /etc/sudoers.d/11-install-aur_builder
+    mode: '0440'
+    validate: /usr/sbin/visudo -cf %s
 
 - name: Check if yay is installed
   command: yay --version
   register: yay_check
   ignore_errors: yes
   changed_when: false
-
-- name: Clone yay repository
-  git:
-    repo: "https://aur.archlinux.org/yay.git"
-    dest: "/tmp/yay-install"
-    version: master
-  when: yay_check.rc != 0
+  check_mode: no
 
 - name: Build and install yay
-  command: makepkg -si --noconfirm
-  args:
-    chdir: "/tmp/yay-install"
-  when: yay_check.rc != 0
-
-- name: Cleanup yay clone
-  file:
-    path: "/tmp/yay-install"
-    state: absent
+  kewlfft.aur.aur:
+    name: yay
+    use: makepkg
+    state: present
+  become_user: aur_builder
   when: yay_check.rc != 0

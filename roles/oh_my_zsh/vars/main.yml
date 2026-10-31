@@ -1,7 +1,0 @@
----
-omz_theme: "robbyrussell"
-
-omz_plugins:
-  - git
-  - zsh-autosuggestions
-  - zsh-syntax-highlighting

@@ -1,10 +1,4 @@
 ---
-- name: Ensure python3-virtualenv is installed
-  pacman:
-    name: python-virtualenv
-    state: present
-  become: yes
-
 - name: Create default Python virtual environment
   command: python3 -m venv "{{ default_venv_path }}"
   args:

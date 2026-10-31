@@ -4,6 +4,7 @@
   register: rustc_check
   ignore_errors: yes
   changed_when: false
+  check_mode: no
 
 - name: Initialize rustup with stable toolchain
   command: rustup default stable

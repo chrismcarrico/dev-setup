@@ -5,11 +5,12 @@
     state: directory
     mode: '0755'
 
+# update: no leaves existing clones alone, so re-runs can't touch work in progress
 - name: Clone GitHub repositories
   git:
     repo: "{{ item.repo }}"
     dest: "{{ github_workspace }}/{{ item.dest }}"
-    update: yes
+    update: no
     accept_hostkey: yes
   loop: "{{ github_repos }}"
   when: github_repos | length > 0
