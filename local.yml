@@ -10,7 +10,7 @@
     - { role: yay, tags: yay }
     - { role: aur_packages, tags: aur }
     - { role: sublime_repo, tags: sublime }
-    # Needs the packages above, and owns ~/.zshrc and Oh My Zsh
+    # Needs the packages above, and owns ~/.zshrc and the KDE configs
     - { role: dotfiles, tags: dotfiles, become: no }
     - { role: rust_setup, tags: rust, become: no }
     - { role: python_setup, tags: python, become: no }

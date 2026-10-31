@@ -1,2 +1,3 @@
 ---
 dotfiles_path: "{{ lookup('env', 'HOME') }}/Source/dotfiles"
+oh_my_zsh_path: "{{ lookup('env', 'HOME') }}/.oh-my-zsh"

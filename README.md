@@ -20,17 +20,7 @@ Ansible recipe for my Arch-based dev machine. On top of a fresh EndeavourOS KDE 
    ~/Source/dev-setup/run.sh
    ```
 
-3. Set your git identity, which is deliberately not stored in these repos:
-
-   ```bash
-   git config --global user.name "Your Name"
-   ```
-
-   ```bash
-   git config --global user.email "you@example.com"
-   ```
-
-4. Create an SSH key and add the public key at <https://github.com/settings/keys>:
+3. Create an SSH key and add the public key at <https://github.com/settings/keys>:
 
    ```bash
    ssh-keygen -t ed25519
@@ -40,15 +30,15 @@ Ansible recipe for my Arch-based dev machine. On top of a fresh EndeavourOS KDE 
    cat ~/.ssh/id_ed25519.pub
    ```
 
-5. Clone the personal repos. They're skipped by default because they need the SSH key:
+4. Clone the personal repos. They're skipped by default because they need the SSH key:
 
    ```bash
    ~/Source/dev-setup/run.sh --tags personal-repos
    ```
 
-6. Log out and back in so the zsh login shell and `docker` group take effect.
+5. Log out and back in so the zsh login shell, `docker` group and KDE configs take effect.
 
-7. Sign in to the apps (VS Code, Chrome, Claude and so on), and run `claude` once to sign in to Claude Code.
+6. Sign in to the apps (VS Code, Chrome, Claude and so on), and run `claude` once to sign in to Claude Code.
 
 ## Running part of it
 
@@ -62,7 +52,7 @@ Ansible recipe for my Arch-based dev machine. On top of a fresh EndeavourOS KDE 
 ./run.sh --check
 ```
 
-`--check` only applies to the playbook: `run.sh` still does its real `pacman -Syu` and collection install first. Tasks that run a command, including `setup.sh`, are skipped in a dry run.
+`--check` only applies to the playbook: `run.sh` still does its real `pacman -Syu` and collection install first. Tasks that run a command, including `link.sh`, are skipped in a dry run.
 
 | Tag | What it does |
 |---|---|
@@ -70,7 +60,7 @@ Ansible recipe for my Arch-based dev machine. On top of a fresh EndeavourOS KDE 
 | `yay` | Creates the `aur_builder` user and installs yay if it's missing. |
 | `aur` | Installs AUR packages. Needs `yay` to have run once. |
 | `sublime` | Adds the Sublime repo and key, and installs Sublime Text and Merge. |
-| `dotfiles` | Clones [dotfiles](https://github.com/chrismcarrico/dotfiles) to `~/Source/dotfiles`, runs its `setup.sh`, and sets zsh as the login shell. |
+| `dotfiles` | Clones [dotfiles](https://github.com/chrismcarrico/dotfiles) to `~/Source/dotfiles`, installs Oh My Zsh, runs the repo's `scripts/link.sh`, and sets zsh as the login shell. |
 | `rust` | Installs the stable toolchain through rustup. |
 | `python` | Creates the `~/.default` venv with `uv`, `ruff` and `ipython`. |
 | `vscode` | Installs VS Code extensions. |
@@ -85,8 +75,8 @@ The playbook is safe to re-run, and a second run should change little. Keep in m
 
 - `run.sh` always does a full `pacman -Syu` first, because Arch doesn't support partial upgrades. Reboot afterwards if the kernel updated.
 - Existing clones are left alone, so nothing gets pulled or overwritten. Update them with git yourself.
-- `setup.sh` moves any real `~/.zshrc` or `~/.bash_aliases` to `<file>.bak-<timestamp>` before linking the repo's copy.
-- Oh My Zsh, `.zshrc` and aliases belong to the dotfiles repo. Change them there, not here.
+- `link.sh` moves any real file in the way to `<file>.bak-<timestamp>` before linking the repo's copy. KDE apps can replace their symlinks with regular files when they save, so copy any newer file into the dotfiles repo before re-running, or the older repo version wins.
+- Shell, git, KDE, GTK and editor configs belong to the dotfiles repo. Change them there, not here. This recipe only installs Oh My Zsh.
 
 ## Changing what gets installed
 
@@ -103,9 +93,9 @@ To see what's on the machine, `pacman -Qqen` lists explicitly installed repo pac
 
 ## Not covered
 
-- The base OS: kernel, bootloader, drivers, and the KDE desktop and its settings.
+- The base OS: kernel, bootloader, drivers, and the KDE desktop. Its settings come from the dotfiles repo.
 - Hardware-specific packages. This laptop also needs `nvidia-open`, `nvidia-utils`, `nvidia-settings`, `asusctl` and `rog-control-center`.
-- `~/.gitconfig` and SSH keys. See steps 3 and 4.
+- SSH keys. See step 3.
 
 ## Notes
 
